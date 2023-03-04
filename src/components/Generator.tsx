@@ -146,8 +146,8 @@ export default () => {
         when={!loading()}
         fallback={() => (
           <div class="h-12 my-4 flex gap-4 items-center justify-center bg-slate bg-op-15 text-slate rounded-sm">
-            <span>AI is thinking...</span>
-            <div class="px-2 py-0.5 border border-slate text-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10" onClick={stopStreamFetch}>Stop</div>
+            <span>GPT正在思考...</span>
+            <div class="px-2 py-0.5 border border-slate text-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10" onClick={stopStreamFetch}>停止</div>
           </div>
         )}
       >
@@ -156,7 +156,7 @@ export default () => {
             ref={inputRef!}
             disabled={loading()}
             onKeyDown={handleKeydown}
-            placeholder="Enter something..."
+            placeholder="输入聊天内容...(SHIFT+ENTER换行)"
             autocomplete="off"
             autofocus
             onInput={() => {
