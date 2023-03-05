@@ -1,7 +1,7 @@
-import { createSignal, For, Show, Index } from 'solid-js'
-import MessageItem from './MessageItem'
-import IconClear from './icons/Clear'
 import type { ChatMessage } from '@/types'
+import { createSignal, Index, Show } from 'solid-js'
+import IconClear from './icons/Clear'
+import MessageItem from './MessageItem'
 
 export default () => {
   let inputRef: HTMLTextAreaElement
@@ -172,12 +172,13 @@ export default () => {
             rounded-sm
             bg-slate
             bg-op-15
+            resize-none
             focus:bg-op-20
             focus:ring-0
             focus:outline-none
             placeholder:text-slate-400
             placeholder:op-30
-            overflow-hidden
+            scroll-pa-8px
           />
           <button onClick={handleButtonClick} disabled={loading()} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 text-slate rounded-sm>
             Send
