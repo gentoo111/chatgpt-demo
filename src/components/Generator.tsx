@@ -156,7 +156,7 @@ export default () => {
             ref={inputRef!}
             disabled={loading()}
             onKeyDown={handleKeydown}
-            placeholder="输入聊天内容...(SHIFT+ENTER换行)"
+            placeholder="SHIFT+ENTER换行"
             autocomplete="off"
             autofocus
             onInput={() => {
