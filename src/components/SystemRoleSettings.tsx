@@ -43,7 +43,7 @@ export default (props: Props) => {
         <div>
           <div class="flex items-center gap-1 op-60 text-slate">
             <IconEnv />
-            <span>系统角色:</span>
+            <span>系统系统角色:</span>
           </div>
           <p class="my-2 leading-normal text-slate text-sm op-60">让GPT扮演你指定的角色</p>
           <div>
