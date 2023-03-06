@@ -25,7 +25,7 @@ export default (props: Props) => {
           <div class="text-slate">
             <div class="flex items-center gap-1 op-60 text-slate">
               <IconEnv />
-              <span>System Role:</span>
+              <span>指定角色:</span>
             </div>
             <div class="mt-1">
               { props.currentSystemRoleSettings() }
@@ -45,11 +45,11 @@ export default (props: Props) => {
             <IconEnv />
             <span>System Role:</span>
           </div>
-          <p class="my-2 leading-normal text-slate text-sm op-60">Gently instruct the assistant and set the behavior of the assistant.</p>
+          <p class="my-2 leading-normal text-slate text-sm op-60">让GPT扮演你指定的角色</p>
           <div>
             <textarea
               ref={systemInputRef!}
-              placeholder="You are a helpful assistant, answer as concisely as possible...."
+              placeholder="你是一个专业的IT架构师,请尽可能详细的回答我的问题。"
               autocomplete="off"
               autofocus
               rows="3"
@@ -71,7 +71,7 @@ export default (props: Props) => {
             />
           </div>
           <button onClick={handleButtonClick} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 text-slate rounded-sm>
-            Set
+            设定
           </button>
         </div>
       </Show>
