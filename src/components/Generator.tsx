@@ -5,10 +5,7 @@ import IconSend from './icons/Send'
 import MessageItem from './MessageItem'
 import SystemRoleSettings from './SystemRoleSettings'
 import _ from 'lodash'
-<<<<<<< HEAD
-=======
 import { generateSignature } from '@/utils/auth'
->>>>>>> ddiu
 
 export default () => {
   let inputRef: HTMLTextAreaElement
