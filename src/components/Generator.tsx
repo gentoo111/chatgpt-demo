@@ -6,6 +6,7 @@ import MessageItem from './MessageItem'
 import SystemRoleSettings from './SystemRoleSettings'
 import _ from 'lodash'
 import { generateSignature } from '@/utils/auth'
+import KeySetting from "./KeySetting";
 
 export default () => {
   onMount(() => {
@@ -14,8 +15,9 @@ export default () => {
   let inputRef: HTMLTextAreaElement,keyRef:HTMLInputElement
   const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
   const [systemRoleEditing, setSystemRoleEditing] = createSignal(false)
+  const [showKey,setKey] = createSignal(false)
   const [messageList, setMessageList] = createSignal<ChatMessage[]>([])
-  const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('')
+  const [currentAssistantMessage, setCurrentAssistantMessage ] = createSignal('')
   const [loading, setLoading] = createSignal(false)
   const [controller, setController] = createSignal<AbortController>(null)
   const handleButtonClick = async () => {
@@ -169,21 +171,10 @@ export default () => {
         currentSystemRoleSettings={currentSystemRoleSettings}
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
       />
-      <span><input ref={keyRef!}
-                   placeholder="填入Key"
-                   px-3 py-3
-                   min-h-12
-                   max-h-36
-                   text-slate
-                   rounded-sm
-                   bg-slate
-                   bg-op-15
-                   resize-none
-                   focus:bg-op-20
-                   focus:ring-0
-                   focus:outline-none
-                   placeholder:text-slate-400
-                   placeholder:op-30/></span>
+     <KeySetting
+         setKey={setKey}
+         showKey={showKey}
+     />
       <Index each={messageList()}>
         {(message, index) => (
           <MessageItem
