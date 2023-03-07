@@ -1,26 +1,39 @@
 import type { ChatMessage } from '@/types'
-import { createSignal, Index, Show } from 'solid-js'
+import { createSignal, Index, Show, onMount } from 'solid-js'
 import IconClear from './icons/Clear'
 import IconSend from './icons/Send'
 import MessageItem from './MessageItem'
 import SystemRoleSettings from './SystemRoleSettings'
 import _ from 'lodash'
 import { generateSignature } from '@/utils/auth'
+import KeySetting from "./KeySetting";
 
 export default () => {
-  let inputRef: HTMLTextAreaElement
+  onMount(() => {
+    setCurrentKey(localStorage.getItem("key"))
+  })
+  let inputRef: HTMLTextAreaElement,keyRef:HTMLInputElement
   const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
+  const [currentKey,setCurrentKey]=createSignal('')
   const [systemRoleEditing, setSystemRoleEditing] = createSignal(false)
+  const [showKey,setKey] = createSignal(false)
   const [messageList, setMessageList] = createSignal<ChatMessage[]>([])
-  const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('')
+  const [currentAssistantMessage, setCurrentAssistantMessage ] = createSignal('')
   const [loading, setLoading] = createSignal(false)
   const [controller, setController] = createSignal<AbortController>(null)
-
   const handleButtonClick = async () => {
+    localStorage.setItem("key", currentKey())
+
     const inputValue = inputRef.value
+
     if (!inputValue) {
       return
     }
+    if (!currentKey()) {
+      setCurrentAssistantMessage('api额度用完,请输入有效openAi_Key使用')
+      return
+    }
+
     // @ts-ignore
     if (window?.umami) umami.trackEvent('chat_generate')
     inputRef.value = ''
@@ -56,6 +69,7 @@ export default () => {
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: JSON.stringify({
+          key:currentKey(),
           messages: requestMessageList,
           time: timestamp,
           sign: await generateSignature({
@@ -159,6 +173,12 @@ export default () => {
         currentSystemRoleSettings={currentSystemRoleSettings}
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
       />
+     <KeySetting
+         setKey={setKey}
+         showKey={showKey}
+         currentKey={currentKey}
+         setCurrentKey={setCurrentKey}
+     />
       <Index each={messageList()}>
         {(message, index) => (
           <MessageItem
