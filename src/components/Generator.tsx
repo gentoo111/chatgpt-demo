@@ -29,10 +29,10 @@ export default () => {
     if (!inputValue) {
       return
     }
-    if (!currentKey()) {
-      setCurrentAssistantMessage('api额度用完,请输入有效openAi_Key使用')
-      return
-    }
+    // if (!currentKey()) {
+    //   setCurrentAssistantMessage('api额度用完,请输入有效openAi_Key使用')
+    //   return
+    // }
 
     // @ts-ignore
     if (window?.umami) umami.trackEvent('chat_generate')
