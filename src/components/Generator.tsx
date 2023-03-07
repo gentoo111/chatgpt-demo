@@ -1,5 +1,5 @@
 import type { ChatMessage } from '@/types'
-import { createSignal, Index, Show } from 'solid-js'
+import { createSignal, Index, Show, onMount } from 'solid-js'
 import IconClear from './icons/Clear'
 import IconSend from './icons/Send'
 import MessageItem from './MessageItem'
@@ -8,18 +8,27 @@ import _ from 'lodash'
 import { generateSignature } from '@/utils/auth'
 
 export default () => {
-  let inputRef: HTMLTextAreaElement
+  onMount(() => {
+    keyRef.value = localStorage.getItem("key")
+  })
+  let inputRef: HTMLTextAreaElement,keyRef:HTMLInputElement
   const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
   const [systemRoleEditing, setSystemRoleEditing] = createSignal(false)
   const [messageList, setMessageList] = createSignal<ChatMessage[]>([])
   const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('')
   const [loading, setLoading] = createSignal(false)
   const [controller, setController] = createSignal<AbortController>(null)
-
   const handleButtonClick = async () => {
     const inputValue = inputRef.value
+    const key=keyRef.value
     if (!inputValue) {
       return
+    }
+    if (!key) {
+      setCurrentAssistantMessage('api额度用完,请输入有效openAi_Key使用')
+      return
+    }else{
+      localStorage.setItem("key", key)
     }
     // @ts-ignore
     if (window?.umami) umami.trackEvent('chat_generate')
@@ -56,6 +65,7 @@ export default () => {
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: JSON.stringify({
+          key:keyRef.value,
           messages: requestMessageList,
           time: timestamp,
           sign: await generateSignature({
@@ -159,6 +169,21 @@ export default () => {
         currentSystemRoleSettings={currentSystemRoleSettings}
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
       />
+      <span><input ref={keyRef!}
+                   placeholder="填入Key"
+                   px-3 py-3
+                   min-h-12
+                   max-h-36
+                   text-slate
+                   rounded-sm
+                   bg-slate
+                   bg-op-15
+                   resize-none
+                   focus:bg-op-20
+                   focus:ring-0
+                   focus:outline-none
+                   placeholder:text-slate-400
+                   placeholder:op-30/></span>
       <Index each={messageList()}>
         {(message, index) => (
           <MessageItem
