@@ -10,10 +10,11 @@ import KeySetting from "./KeySetting";
 
 export default () => {
   onMount(() => {
-    keyRef.value = localStorage.getItem("key")
+    setCurrentKey(localStorage.getItem("key"))
   })
   let inputRef: HTMLTextAreaElement,keyRef:HTMLInputElement
   const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
+  const [currentKey,setCurrentKey]=createSignal('')
   const [systemRoleEditing, setSystemRoleEditing] = createSignal(false)
   const [showKey,setKey] = createSignal(false)
   const [messageList, setMessageList] = createSignal<ChatMessage[]>([])
@@ -21,17 +22,18 @@ export default () => {
   const [loading, setLoading] = createSignal(false)
   const [controller, setController] = createSignal<AbortController>(null)
   const handleButtonClick = async () => {
+    localStorage.setItem("key", currentKey())
+
     const inputValue = inputRef.value
-    const key=keyRef.value
+
     if (!inputValue) {
       return
     }
-    if (!key) {
+    if (!currentKey()) {
       setCurrentAssistantMessage('api额度用完,请输入有效openAi_Key使用')
       return
-    }else{
-      localStorage.setItem("key", key)
     }
+
     // @ts-ignore
     if (window?.umami) umami.trackEvent('chat_generate')
     inputRef.value = ''
@@ -67,7 +69,7 @@ export default () => {
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: JSON.stringify({
-          key:keyRef.value,
+          key:currentKey(),
           messages: requestMessageList,
           time: timestamp,
           sign: await generateSignature({
@@ -174,6 +176,8 @@ export default () => {
      <KeySetting
          setKey={setKey}
          showKey={showKey}
+         currentKey={currentKey}
+         setCurrentKey={setCurrentKey}
      />
       <Index each={messageList()}>
         {(message, index) => (
