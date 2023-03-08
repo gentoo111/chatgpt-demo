@@ -246,7 +246,7 @@ export default () => {
                     </div>
                 )}
             >
-                <div class="my-4 flex items-center gap-2 transition-opacity" class:op-50={systemRoleEditing()}>
+                <div class="my-4 sm:flex items-center gap-2 transition-opacity" class:op-50={systemRoleEditing()}>
           <textarea
               ref={inputRef!}
               disabled={systemRoleEditing()}
@@ -275,16 +275,17 @@ export default () => {
               dark="placeholder:op-30"
               scroll-pa-8px
           />
-                    <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} h-12 px-4 py-2
+                    <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2
                             bg-slate bg-op-15 hover:bg-op-20 text-slate rounded-sm>
                         <IconSend/>
                     </button>
-                    <button title="清除" onClick={clear} disabled={systemRoleEditing()} h-12 px-4 py-2 bg-slate bg-op-15
+                    <button title="清除" onClick={clear} disabled={systemRoleEditing()} mr-1 sm:mr-0  h-12 px-4 py-2 bg-slate bg-op-15
                             hover:bg-op-20 text-slate rounded-sm>
                         <IconClear/>
                     </button>
                     <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
-                            disabled={systemRoleEditing()} hidden sm:block h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+                            disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15
+                            hover:bg-op-20 text-slate rounded-sm>
                         <IconRobotDead/>
                     </button>
                 </div>
