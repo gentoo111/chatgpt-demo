@@ -10,7 +10,7 @@ import KeySetting from "./KeySetting";
 
 export default () => {
   onMount(() => {
-    setCurrentKey(localStorage.getItem("key"))
+    setCurrentKey(localStorage.getItem("key")??"")
   })
   let inputRef: HTMLTextAreaElement,keyRef:HTMLInputElement
   const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
