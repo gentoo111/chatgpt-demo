@@ -25,7 +25,7 @@ export default (props: Props) => {
           <div>
             <div class="flex items-center gap-1 op-50 dark:op-60">
               <IconEnv />
-              <span>System Role:</span>
+              <span>指定角色:</span>
             </div>
             <div class="mt-1">
               { props.currentSystemRoleSettings() }
@@ -35,7 +35,7 @@ export default (props: Props) => {
         <Show when={!props.currentSystemRoleSettings() && props.canEdit()}>
           <span onClick={() => props.setSystemRoleEditing(!props.systemRoleEditing())} class="inline-flex items-center justify-center gap-1 text-sm bg-slate/20 px-2 py-1 rounded-md transition-colors cursor-pointer hover:bg-slate/50">
             <IconEnv />
-            <span>Add System Role</span>
+            <span>指定系统角色</span>
           </span>
         </Show>
       </Show>
@@ -43,13 +43,13 @@ export default (props: Props) => {
         <div>
           <div class="flex items-center gap-1 op-50 dark:op-60">
             <IconEnv />
-            <span>System Role:</span>
+            <span>系统角色:</span>
           </div>
-          <p class="my-2 leading-normal text-sm op-50 dark:op-60">Gently instruct the assistant and set the behavior of the assistant.</p>
+          <p class="my-2 leading-normal text-slate text-sm op-60">让GPT扮演你指定的角色</p>
           <div>
             <textarea
               ref={systemInputRef!}
-              placeholder="You are a helpful assistant, answer as concisely as possible...."
+              placeholder="你是一个专业的IT架构师,请尽可能详细的回答我的问题。"
               autocomplete="off"
               autofocus
               rows="3"
@@ -69,8 +69,8 @@ export default (props: Props) => {
               resize-none scroll-pa-8px
             />
           </div>
-          <button onClick={handleButtonClick} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
-            Set
+          <button onClick={handleButtonClick} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 text-slate rounded-sm>
+            设定
           </button>
         </div>
       </Show>
