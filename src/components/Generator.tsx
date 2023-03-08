@@ -284,7 +284,7 @@ export default () => {
                         <IconClear/>
                     </button>
                     <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
-                            disabled={systemRoleEditing()} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+                            disabled={systemRoleEditing()} hidden sm:block h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
                         <IconRobotDead/>
                     </button>
                 </div>
