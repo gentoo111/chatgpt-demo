@@ -15,7 +15,7 @@ export const post: APIRoute = async (context) => {
   const body = await context.request.json()
   const { sign, time, messages,key } = body
   let apiKey = import.meta.env.OPENAI_API_KEY
-  if(key!=superKey){
+  if(key!=superKey&&key){
     apiKey=key
   }
   if (!messages) {
