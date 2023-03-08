@@ -201,7 +201,6 @@ export default () => {
             px-3 py-3
             min-h-12
             max-h-36
-            text-slate
             rounded-sm
             bg-slate
             bg-op-15
@@ -209,8 +208,8 @@ export default () => {
             focus:bg-op-20
             focus:ring-0
             focus:outline-none
-            placeholder:text-slate-400
-            placeholder:op-30
+            placeholder:op-50
+            dark="placeholder:op-30"
             scroll-pa-8px
           />
           <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 text-slate rounded-sm>
