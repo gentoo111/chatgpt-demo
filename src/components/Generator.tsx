@@ -92,6 +92,7 @@ export default () => {
     const requestWithLatestMessage = async () => {
         setLoading(true)
         setCurrentAssistantMessage('')
+        const storagePassword = localStorage.getItem('pass')
         try {
             const controller = new AbortController()
             setController(controller)
