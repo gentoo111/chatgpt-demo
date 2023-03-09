@@ -10,16 +10,20 @@ import { fetch, ProxyAgent } from 'undici'
 const superKey=import.meta.env.SUPER_KEY
 const httpsProxy = import.meta.env.HTTPS_PROXY
 const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
+const sitePassword = import.meta.env.SITE_PASSWORD
 
 export const post: APIRoute = async (context) => {
   const body = await context.request.json()
-  const { sign, time, messages,key } = body
+  const { sign, time, messages, pass, key } = body
   let apiKey = import.meta.env.OPENAI_API_KEY
   if(key!=superKey&&key){
     apiKey=key
   }
   if (!messages) {
     return new Response('No input text')
+  }
+  if (sitePassword && sitePassword !== pass) {
+    return new Response('Invalid password')
   }
   if (import.meta.env.PROD && !await verifySignature({ t: time, m: messages?.[messages.length - 1]?.content || '', }, sign)) {
     return new Response('Invalid signature')

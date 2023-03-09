@@ -108,6 +108,7 @@ export default () => {
                 body: JSON.stringify({
                     key: currentKey(),
                     messages: requestMessageList,
+                    pass: storagePassword,
                     time: timestamp,
                     sign: await generateSignature({
                         t: timestamp,
