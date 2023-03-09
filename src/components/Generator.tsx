@@ -5,9 +5,10 @@ import IconRobotDead from './icons/RobotDead'
 import IconSend from './icons/Send'
 import MessageItem from './MessageItem'
 import SystemRoleSettings from './SystemRoleSettings'
-import _ from 'lodash'
 import {generateSignature} from '@/utils/auth'
 import KeySetting from "./KeySetting";
+import { useThrottleFn } from 'solidjs-use'
+
 
 export default () => {
     onMount(() => {
@@ -27,19 +28,12 @@ export default () => {
     const [forcedAssistantEnabled, setForcedAssistantEnabled] = createSignal(false)
 
     const handleButtonClick = async () => {
-        localStorage.setItem("key", currentKey())
-
         const inputValue = inputRef.value
-
         if (!inputValue) {
             return
         }
-        // if (!currentKey()) {
-        //   setCurrentAssistantMessage('api额度用完,请输入有效openAi_Key使用')
-        //   return
-        // }
 
-
+        localStorage.setItem("key", currentKey())
         if (forcedAssistantEnabled()) {
             forceAssistant(inputValue)
             return
@@ -82,12 +76,9 @@ export default () => {
         inputRef.focus()
     }
 
-    const throttle = _.throttle(function () {
-        window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})
-    }, 300, {
-        leading: true,
-        trailing: false
-    })
+    const smoothToBottom = useThrottleFn(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+    }, 300, false, true)
 
     const requestWithLatestMessage = async () => {
         setLoading(true)
@@ -129,28 +120,28 @@ export default () => {
             const decoder = new TextDecoder('utf-8')
             let done = false
 
-            while (!done) {
-                const {value, done: readerDone} = await reader.read()
-                if (value) {
-                    let char = decoder.decode(value)
-                    if (char === '\n' && currentAssistantMessage().endsWith('\n')) {
-                        continue
-                    }
-                    if (char) {
-                        setCurrentAssistantMessage(currentAssistantMessage() + char)
-                    }
-                    throttle()
-                }
-                done = readerDone
-            }
-        } catch (e) {
-            console.error(e)
-            setLoading(false)
-            setController(null)
-            return
+      while (!done) {
+        const { value, done: readerDone } = await reader.read()
+        if (value) {
+          let char = decoder.decode(value)
+          if (char === '\n' && currentAssistantMessage().endsWith('\n')) {
+            continue
+          }
+          if (char) {
+            setCurrentAssistantMessage(currentAssistantMessage() + char)
+          }
+          smoothToBottom()
         }
-        archiveCurrentMessage()
+        done = readerDone
+      }
+    } catch (e) {
+      console.error(e)
+      setLoading(false)
+      setController(null)
+      return
     }
+    archiveCurrentMessage()
+  }
 
     const archiveCurrentMessage = () => {
         if (currentAssistantMessage()) {
@@ -203,95 +194,74 @@ export default () => {
         }
     }
 
-    // @ts-ignore
-    return (
-        <div my-6>
-            <SystemRoleSettings
-                canEdit={() => messageList().length === 0}
-                systemRoleEditing={systemRoleEditing}
-                setSystemRoleEditing={setSystemRoleEditing}
-                currentSystemRoleSettings={currentSystemRoleSettings}
-                setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
-            />
-            <KeySetting
-                setKey={setKey}
-                showKey={showKey}
-                currentKey={currentKey}
-                setCurrentKey={setCurrentKey}
-            />
-            <Index each={messageList()}>
-                {(message, index) => (
-                    <MessageItem
-                        role={message().role}
-                        message={message().content}
-                        showRetry={() => (message().role === 'assistant' && index === messageList().length - 1)}
-                        onRetry={retryLastFetch}
-                    />
-                )}
-            </Index>
-            {currentAssistantMessage() && (
-                <MessageItem
-                    role="assistant"
-                    message={currentAssistantMessage}
-                />
-            )}
-            <Show
-                when={!loading()}
-                fallback={() => (
-                    <div
-                        class="h-12 my-4 flex gap-4 items-center justify-center bg-slate bg-op-15 text-slate rounded-sm">
-                        <span>ChatGPT正在思考...</span>
-                        <div
-                            class="px-2 py-0.5 border border-slate text-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10"
-                            onClick={stopStreamFetch}>停止
-                        </div>
-                    </div>
-                )}
-            >
-                <div class="my-4 sm:flex items-center gap-2 transition-opacity" class:op-50={systemRoleEditing()}>
-          <textarea
-              ref={inputRef!}
-              disabled={systemRoleEditing()}
-              onKeyDown={handleKeydown}
-              placeholder="SHIFT+ENTER换行"
-              autocomplete="off"
-              autofocus
-              onInput={() => {
-                  inputRef.style.height = 'auto';
-                  inputRef.style.height = inputRef.scrollHeight + 'px';
-              }}
-              rows="1"
-              w-full
-              px-3 py-3
-              min-h-12
-              max-h-36
-              rounded-sm
-              bg-slate
-              bg-op-15
-              resize-none
-              focus:bg-op-20
-              focus:ring-0
-              focus:outline-none
-              placeholder:op-50
-              //@ts-ignore
-              dark="placeholder:op-30"
-              scroll-pa-8px
+  return (
+    <div my-6>
+      <SystemRoleSettings
+        canEdit={() => messageList().length === 0}
+        systemRoleEditing={systemRoleEditing}
+        setSystemRoleEditing={setSystemRoleEditing}
+        currentSystemRoleSettings={currentSystemRoleSettings}
+        setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
+      />
+        <KeySetting
+            setKey={setKey}
+            showKey={showKey}
+            currentKey={currentKey}
+            setCurrentKey={setCurrentKey}
+        />
+      <Index each={messageList()}>
+        {(message, index) => (
+          <MessageItem
+            role={message().role}
+            message={message().content}
+            showRetry={() => (message().role === 'assistant' && index === messageList().length - 1)}
+            onRetry={retryLastFetch}
           />
-                    <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2
-                            bg-slate bg-op-15 hover:bg-op-20 text-slate rounded-sm>
-                        <IconSend/>
-                    </button>
-                    <button title="清除" onClick={clear} disabled={systemRoleEditing()} mr-1 sm:mr-0  h-12 px-4 py-2 bg-slate bg-op-15
-                            hover:bg-op-20 text-slate rounded-sm>
-                        <IconClear/>
-                    </button>
-                    <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
-                            disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15
-                            hover:bg-op-20 text-slate rounded-sm>
-                        <IconRobotDead/>
-                    </button>
-                </div>
-                <Show when={forcedAssistantEnabled()}>
+        )}
+      </Index>
+      {currentAssistantMessage() && (
+        <MessageItem
+          role="assistant"
+          message={currentAssistantMessage}
+        />
+      )}
+      <Show
+        when={!loading()}
+        fallback={() => (
+            <div class="gen-cb-wrapper">
+                <span>ChatGPT正在思考...</span>
+                <div class="gen-cb-stop" onClick={stopStreamFetch}>停止</div>
+            </div>
+        )}
+      >
+          <div class="gen-text-wrapper" class:op-50={systemRoleEditing()}>
+          <textarea
+            ref={inputRef!}
+            disabled={systemRoleEditing()}
+            onKeyDown={handleKeydown}
+            placeholder="Enter something..."
+            autocomplete="off"
+            autofocus
+            onInput={() => {
+              inputRef.style.height = 'auto';
+              inputRef.style.height = inputRef.scrollHeight + 'px';
+            }}
+            rows="1"
+            class='gen-textarea'
+          />
+          <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+            <IconSend />
+          </button>
+          <button title="清除" onClick={clear} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+            <IconClear />
+          </button>
+              <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
+                      disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15
+                      hover:bg-op-20 text-slate rounded-sm>
+                  <IconRobotDead/>
+              </button>
+        </div>
+          <Show when={forcedAssistantEnabled()}>
           <textarea
               ref={forcedAssistant!}
               disabled={systemRoleEditing()}
@@ -320,8 +290,8 @@ export default () => {
               dark="placeholder:op-30"
               scroll-pa-8px
           />
-                </Show>
-            </Show>
-        </div>
-    )
+          </Show>
+      </Show>
+    </div>
+  )
 }
