@@ -228,7 +228,7 @@ export default () => {
     }
 
   return (
-    <div my-6 sm:my-20 ref={containerRef!}>
+    <div my-6 mb-6 sm:mb-20 ref={containerRef!}>
       <SystemRoleSettings
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
