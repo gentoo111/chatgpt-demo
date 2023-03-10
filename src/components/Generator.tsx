@@ -227,7 +227,6 @@ export default () => {
         }
     }
 
-  // @ts-ignore
     return (
     <div my-6 mb-20 sm:mb-32 ref={containerRef!}>
       <SystemRoleSettings
@@ -303,11 +302,11 @@ export default () => {
           <button title="清除" onClick={clear} disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             <IconClear />
           </button>
-              <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
-                      disabled={systemRoleEditing()} hidden sm:block h-12 px-4 py-2 bg-slate bg-op-15
-                      hover:bg-op-20 text-slate rounded-sm>
-                  <IconRobotDead/>
-              </button>
+          <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
+                  disabled={systemRoleEditing()} hidden sm:block h-12 px-4 py-2 bg-slate bg-op-15
+                  hover:bg-op-20  rounded-sm>
+              <IconRobotDead/>
+          </button>
         </div>
           <Show when={forcedAssistantEnabled()}>
           <textarea
