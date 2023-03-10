@@ -228,7 +228,7 @@ export default () => {
     }
 
   return (
-    <div my-6 ref={containerRef!}>
+    <div my-6 sm:my-20 ref={containerRef!}>
       <SystemRoleSettings
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
@@ -259,7 +259,7 @@ export default () => {
         />
       )}
         <div
-            class="pb-2em sm:fixed bottom-0 z-100 op-0"
+            class="pb-0 sm:pb-10 sm:fixed bottom-0 z-100 op-0"
             style={
                 containerWidth() === "init"
                     ?{}
