@@ -29,3 +29,6 @@ export const verifySignature = async (payload: AuthPayload, sign: string) => {
   const payloadSign = await generateSignature(payload)
   return payloadSign === sign
 }
+export function isMobile() {
+  return /Mobi|Android|iPhone/i.test(navigator.userAgent)
+}

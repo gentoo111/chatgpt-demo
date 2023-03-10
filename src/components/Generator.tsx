@@ -10,7 +10,7 @@ import KeySetting from "./KeySetting";
 import { useThrottleFn } from 'solidjs-use'
 // @ts-ignore
 import { createResizeObserver } from "@solid-primitives/resize-observer"
-
+import {isMobile} from "@/utils/auth";
 
 export default () => {
     let inputRef: HTMLTextAreaElement, keyRef: HTMLInputElement
@@ -99,7 +99,7 @@ export default () => {
             }
         ])
 
-        inputRef.focus()
+        !isMobile()&&inputRef.focus()
     }
 
     const smoothToBottom = useThrottleFn(() => {
@@ -188,7 +188,7 @@ export default () => {
             setCurrentAssistantMessage('')
             setLoading(false)
             setController(null)
-            inputRef.focus()
+            !isMobile()&&inputRef.focus()
         }
     }
 
@@ -228,7 +228,7 @@ export default () => {
     }
 
   return (
-    <div my-6 mb-6 sm:mb-20 ref={containerRef!}>
+    <div my-6 mb-32 ref={containerRef!}>
       <SystemRoleSettings
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
@@ -259,7 +259,7 @@ export default () => {
         />
       )}
         <div
-            class="pb-0 sm:pb-10 sm:fixed bottom-0 z-100 op-0"
+            class="pb-10 sm:pb-20 fixed bottom-0 z-100 op-0"
             style={
                 containerWidth() === "init"
                     ?{}
