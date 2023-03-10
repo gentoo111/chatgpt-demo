@@ -1,5 +1,5 @@
-import type {ChatMessage} from '@/types'
-import {createSignal, Index, Show, onMount} from 'solid-js'
+import type { ChatMessage } from '@/types'
+import { createSignal, Index, Show, onMount, onCleanup } from 'solid-js'
 import IconClear from './icons/Clear'
 import IconRobotDead from './icons/RobotDead'
 import IconSend from './icons/Send'
@@ -11,9 +11,6 @@ import { useThrottleFn } from 'solidjs-use'
 
 
 export default () => {
-    onMount(() => {
-        setCurrentKey(localStorage.getItem("key") ?? "")
-    })
     let inputRef: HTMLTextAreaElement, keyRef: HTMLInputElement
     const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
     const [currentKey, setCurrentKey] = createSignal('')
@@ -23,34 +20,55 @@ export default () => {
     const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('')
     const [loading, setLoading] = createSignal(false)
     const [controller, setController] = createSignal<AbortController>(null)
-
     let forcedAssistant: HTMLTextAreaElement
     const [forcedAssistantEnabled, setForcedAssistantEnabled] = createSignal(false)
 
-    const handleButtonClick = async () => {
-        const inputValue = inputRef.value
-        if (!inputValue) {
-            return
+    onMount(() => {
+        setCurrentKey(localStorage.getItem("key") ?? "")
+        try {
+            if (localStorage.getItem('messageList')) {
+                setMessageList(JSON.parse(localStorage.getItem('messageList')))
+            }
+            if (localStorage.getItem('systemRoleSettings')) {
+                setCurrentSystemRoleSettings(localStorage.getItem('systemRoleSettings'))
+            }
+        } catch (err) {
+            console.error(err)
         }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+        onCleanup(() => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        })
+    })
+    const handleBeforeUnload = () => {
+        localStorage.setItem('messageList', JSON.stringify(messageList()))
+        localStorage.setItem('systemRoleSettings', currentSystemRoleSettings())
+    }
+
+    const handleButtonClick = async () => {
+    const inputValue = inputRef.value
+    if (!inputValue) {
+      return
+    }
 
         localStorage.setItem("key", currentKey())
         if (forcedAssistantEnabled()) {
             forceAssistant(inputValue)
             return
         }
-
-        // @ts-ignore
-        if (window?.umami) umami.trackEvent('chat_generate')
-        inputRef.value = ''
-        setMessageList([
-            ...messageList(),
-            {
-                role: 'user',
-                content: inputValue,
-            },
-        ])
-        requestWithLatestMessage()
-    }
+    // @ts-ignore
+    if (window?.umami) umami.trackEvent('chat_generate')
+    inputRef.value = ''
+    setMessageList([
+      ...messageList(),
+      {
+        role: 'user',
+        content: inputValue,
+      },
+    ])
+    requestWithLatestMessage()
+  }
 
     const forceAssistant = (message: string) => {
         const forcedValue = forcedAssistant.value
