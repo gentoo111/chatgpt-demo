@@ -21,7 +21,6 @@ export default defineConfig({
   transformers: [transformerVariantGroup(), transformerDirectives()],
   shortcuts: [{
     'fc': 'flex justify-center',
-    'fcs': 'sm:flex justify-center',
     'fi': 'flex items-center',
     'fb': 'flex justify-between',
     'fcc': 'fc items-center',
@@ -40,7 +39,7 @@ export default defineConfig({
     'gen-slate-btn': 'h-12 px-4 py-2 bg-(slate op-15) hover:bg-op-20 rounded-sm',
     'gen-cb-wrapper': 'bottom-6 sticky h-12 my-4 fcc gap-4 bg-(slate op-15) rounded-sm',
     'gen-cb-stop': 'px-2 py-0.5 border border-slate rounded-md text-sm op-70 cursor-pointer hover:bg-slate/10',
-    'gen-text-wrapper': 'z-10 bottom-14 sticky my-4 fcs gap-2 transition-opacity',
+    'gen-text-wrapper': 'z-10 bottom-14 sticky my-4 fc gap-2 transition-opacity',
     'gen-textarea': 'w-full px-3 py-3 min-h-12 max-h-36 rounded-sm bg-(slate op-15) resize-none base-focus placeholder:op-50 dark:(placeholder:op-30) scroll-pa-8px',
     'sys-edit-btn': 'inline-fcc gap-1 text-sm bg-slate/20 px-2 py-1 rounded-md transition-colors cursor-pointer hover:bg-slate/50',
   }]

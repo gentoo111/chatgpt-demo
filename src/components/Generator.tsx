@@ -227,8 +227,9 @@ export default () => {
         }
     }
 
-  return (
-    <div my-6 mb-32 ref={containerRef!}>
+  // @ts-ignore
+    return (
+    <div my-6 mb-20 sm:mb-32 ref={containerRef!}>
       <SystemRoleSettings
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
@@ -296,14 +297,14 @@ export default () => {
             rows="1"
             class='gen-textarea'
           />
-          <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+          <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             <IconSend />
           </button>
-          <button title="清除" onClick={clear} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+          <button title="清除" onClick={clear} disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             <IconClear />
           </button>
               <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
-                      disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15
+                      disabled={systemRoleEditing()} hidden sm:block h-12 px-4 py-2 bg-slate bg-op-15
                       hover:bg-op-20 text-slate rounded-sm>
                   <IconRobotDead/>
               </button>
