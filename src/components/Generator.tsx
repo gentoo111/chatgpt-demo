@@ -112,13 +112,15 @@ export default () => {
         try {
             const controller = new AbortController()
             setController(controller)
-            const requestMessageList = [...messageList()]
+            const originRequestMessageList = [...messageList()]
+            let requestMessageList=originRequestMessageList.slice(-3)
             if (currentSystemRoleSettings()) {
                 requestMessageList.unshift({
                     role: 'system',
                     content: currentSystemRoleSettings(),
                 })
             }
+
             const timestamp = Date.now()
             const response = await fetch('/api/generate', {
                 method: 'POST',
