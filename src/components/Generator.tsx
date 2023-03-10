@@ -8,6 +8,8 @@ import SystemRoleSettings from './SystemRoleSettings'
 import {generateSignature} from '@/utils/auth'
 import KeySetting from "./KeySetting";
 import { useThrottleFn } from 'solidjs-use'
+// @ts-ignore
+import { createResizeObserver } from "@solid-primitives/resize-observer"
 
 
 export default () => {
@@ -20,10 +22,15 @@ export default () => {
     const [currentAssistantMessage, setCurrentAssistantMessage] = createSignal('')
     const [loading, setLoading] = createSignal(false)
     const [controller, setController] = createSignal<AbortController>(null)
+    const [containerWidth, setContainerWidth] = createSignal("init")
     let forcedAssistant: HTMLTextAreaElement
+    let containerRef: HTMLDivElement
     const [forcedAssistantEnabled, setForcedAssistantEnabled] = createSignal(false)
 
     onMount(() => {
+        createResizeObserver(containerRef, ({ width, height }, el) => {
+            if (el === containerRef) setContainerWidth(`${width}px`)
+        })
         setCurrentKey(localStorage.getItem("key") ?? "")
         try {
             if (localStorage.getItem('messageList')) {
@@ -213,7 +220,7 @@ export default () => {
     }
 
   return (
-    <div my-6>
+    <div my-6 ref={containerRef!}>
       <SystemRoleSettings
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
@@ -252,6 +259,19 @@ export default () => {
             </div>
         )}
       >
+          <div
+              class="pb-2em fixed bottom-0 z-100 op-0"
+              style={
+                  containerWidth() === "init"
+                      ?{}
+                      : {
+                      transition: "opacity 1s ease-in-out",
+                      width: containerWidth(),
+                      opacity: 100,
+                      "background-color": "var(--c-bg)"
+                  }
+              }
+          >
           <div class="gen-text-wrapper" class:op-50={systemRoleEditing()}>
           <textarea
             ref={inputRef!}
@@ -292,24 +312,14 @@ export default () => {
                   forcedAssistant.style.height = forcedAssistant.scrollHeight + 'px';
               }}
               rows="1"
-              w-full
-              px-3 py-3
-              min-h-12
-              max-h-36
-              rounded-sm
-              bg-slate
-              bg-op-15
-              resize-none
-              focus:bg-op-20
-              focus:ring-0
-              focus:outline-none
-              placeholder:op-50
-              //@ts-ignore
-              dark="placeholder:op-30"
-              scroll-pa-8px
+              class='gen-textarea'
           />
+
           </Show>
+          </div>
       </Show>
+
     </div>
+
   )
 }

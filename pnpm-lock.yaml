@@ -5,6 +5,7 @@ specifiers:
   '@astrojs/solid-js': ^2.0.2
   '@astrojs/vercel': ^3.1.3
   '@iconify-json/carbon': ^1.1.16
+  '@solid-primitives/resize-observer': ^2.0.11
   '@types/markdown-it': ^12.2.3
   '@unocss/preset-attributify': ^0.50.1
   '@unocss/preset-icons': ^0.50.4
@@ -45,6 +46,7 @@ dependencies:
 
 devDependencies:
   '@iconify-json/carbon': 1.1.16
+  '@solid-primitives/resize-observer': 2.0.11_solid-js@1.6.11
   '@types/markdown-it': 12.2.3
   '@unocss/preset-attributify': 0.50.1
   '@unocss/preset-icons': 0.50.4
@@ -759,6 +761,43 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /@solid-primitives/event-listener/2.2.8_solid-js@1.6.11:
+    resolution: {integrity: sha512-I3Fw6+1g1YrXBWHwnNi6UaYuRVeaRBN2pvfGvKgnHH4OtfN6mgkGXi7s+/QOJjS29sEdwRDR9tQgxckaIxKZ7A==}
+    peerDependencies:
+      solid-js: ^1.6.0
+    dependencies:
+      '@solid-primitives/utils': 5.4.0_solid-js@1.6.11
+      solid-js: 1.6.11
+    dev: true
+
+  /@solid-primitives/resize-observer/2.0.11_solid-js@1.6.11:
+    resolution: {integrity: sha512-d9ePqQWVnHrr05u2IQaQNSPHaE898LUU5vuUcJzyjAP+3y6w/OD7wQKF/+BifploVqu3Fz7hLGlJA9GoDF2c2Q==}
+    peerDependencies:
+      solid-js: ^1.6.0
+    dependencies:
+      '@solid-primitives/event-listener': 2.2.8_solid-js@1.6.11
+      '@solid-primitives/rootless': 1.2.6_solid-js@1.6.11
+      '@solid-primitives/utils': 5.4.0_solid-js@1.6.11
+      solid-js: 1.6.11
+    dev: true
+
+  /@solid-primitives/rootless/1.2.6_solid-js@1.6.11:
+    resolution: {integrity: sha512-gcEF2JqdLDyKsfA7FWRZok1JkbKKjQesaRAj4odfkHTakEzU95YfBQxH9NHZ/ezP5WSR7m/xEh5eQjHs+7XPPA==}
+    peerDependencies:
+      solid-js: ^1.6.11
+    dependencies:
+      '@solid-primitives/utils': 5.4.0_solid-js@1.6.11
+      solid-js: 1.6.11
+    dev: true
+
+  /@solid-primitives/utils/5.4.0_solid-js@1.6.11:
+    resolution: {integrity: sha512-cSya9Tnh8KW6OYtJbZYs3//CVWWQAOXhMckH9paSzMQcoM09P+R1lLUN9BhQOws4c6PMA0apPNrbWsQzqZzIEw==}
+    peerDependencies:
+      solid-js: ^1.6.0
+    dependencies:
+      solid-js: 1.6.11
+    dev: true
+
   /@solidjs-use/shared/1.2.0:
     resolution: {integrity: sha512-HkGJl6c3XDlusLFJw+4JKUCiW6PZ1xw+brMZdyGMfDbr+RQZXrLfu61WbGhVpY5BPy/+P93gS4+WKpBhOqkz6Q==}
     dependencies:
@@ -1125,8 +1164,10 @@ packages:
       - supports-color
     dev: false
 
-  /ajv-formats/2.1.1:
+  /ajv-formats/2.1.1_ajv@8.12.0:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependencies:
+      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -1556,7 +1597,7 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       ajv: 8.12.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.12.0
       atomically: 2.0.1
       debounce-fn: 5.1.2
       dot-prop: 7.2.0
@@ -1600,7 +1641,6 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-    dev: false
 
   /debounce-fn/5.1.2:
     resolution: {integrity: sha512-Sr4SdOZ4vw6eQDvPYNxHogvrxmCIld/VenC5JbNrFwMiwd7lY/Z18ZFfo+EWNG4DD9nFlAujWAo/wGuOPHmy5A==}
@@ -3682,7 +3722,6 @@ packages:
     resolution: {integrity: sha512-JquQQHPArGq+i2PLURxJ99Pcz2/1docpbycSio/cKSA0SeI3z5zRjy0TNcH4NRYvbOLrcini+iovXwnexKabyw==}
     dependencies:
       csstype: 3.1.1
-    dev: false
 
   /solidjs-use/1.2.0:
     resolution: {integrity: sha512-Ylx/ggV/eQ9CMHDux29XKh+23yLmEh+seu/FAbRO41cQzKqi1X/038xSyQwWulPHRGrFBxEggPVQ0WmotTtquA==}
