@@ -6,6 +6,8 @@ import mdKatex from 'markdown-it-katex'
 import mdHighlight from 'markdown-it-highlightjs'
 import IconRefresh from './icons/Refresh'
 import { useClipboard, useEventListener } from 'solidjs-use'
+import Robot from "./icons/Robot";
+import Person from "./icons/Person";
 
 interface Props {
   role: ChatMessage['role']
@@ -67,7 +69,10 @@ export default ({ role, message, showRetry, onRetry }: Props) => {
   return (
     <div class="py-2 -mx-4 px-4 h-1/5 transition-colors md:hover:bg-slate/3">
       <div class="flex gap-3 rounded-lg" class:op-75={role === 'user'}>
-        <div class={`shrink-0 w-7 h-7 mt-4 rounded-full op-80 ${roleClass[role]}`}></div>
+        {role==='user'?
+            <div class="shrink-0 w-7 h-7 mt-4 rounded-full op-80 "><Person /></div>:<div class="shrink-0 w-7 h-7 mt-4 rounded-full op-80 "><Robot /></div>
+      }
+
         <div class="message prose break-words overflow-hidden" innerHTML={htmlString()} />
       </div>
       {showRetry?.() && onRetry && (
