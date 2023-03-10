@@ -11,13 +11,27 @@ const superKey=import.meta.env.SUPER_KEY
 const httpsProxy = import.meta.env.HTTPS_PROXY
 const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
 const sitePassword = import.meta.env.SITE_PASSWORD
-
+let count = 0;
+let timestamp:number[] = [0];
 export const post: APIRoute = async (context) => {
+  let now:number = Date.now();
+  if ((timestamp.length>5?now - timestamp[timestamp.length-5]:now-timestamp[timestamp.length-1]) < 15000) {
+    count++;
+  } else {
+    count = 1;
+  }
+  timestamp.push(now);
+  if(timestamp.length>5){
+    timestamp.shift()
+  }
   const body = await context.request.json()
   const { sign, time, messages, pass, key } = body
   let apiKey = import.meta.env.OPENAI_API_KEY
   if(key!=superKey&&key){
     apiKey=key
+  }
+  if(count>=5){
+    return new Response("You have sent too many messages in a short period of time. Please retry after one minute!")
   }
   if (!messages) {
     return new Response('No input text')
