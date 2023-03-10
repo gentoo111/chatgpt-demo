@@ -57,7 +57,7 @@ export default (props: Props) => {
             />
           </div>
           <button onClick={handleButtonClick} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
-            Set
+            设置
           </button>
         </div>
       </Show>
