@@ -35,6 +35,7 @@ export default () => {
         try {
             if (localStorage.getItem('messageList')) {
                 setMessageList(JSON.parse(localStorage.getItem('messageList')))
+                smoothToBottom()
             }
             if (localStorage.getItem('systemRoleSettings')) {
                 setCurrentSystemRoleSettings(localStorage.getItem('systemRoleSettings'))
@@ -102,7 +103,11 @@ export default () => {
     }
 
     const smoothToBottom = useThrottleFn(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+
+        setTimeout(()=>{
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+        },300)
+
     }, 300, false, true)
 
     const requestWithLatestMessage = async () => {
@@ -160,6 +165,7 @@ export default () => {
           smoothToBottom()
         }
         done = readerDone
+          smoothToBottom()
       }
     } catch (e) {
       console.error(e)
