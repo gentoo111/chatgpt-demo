@@ -250,28 +250,29 @@ export default () => {
           message={currentAssistantMessage}
         />
       )}
+        <div
+            class="pb-2em sm:fixed bottom-0 z-100 op-0"
+            style={
+                containerWidth() === "init"
+                    ?{}
+                    : {
+                        width: containerWidth(),
+                        opacity: 100,
+                        "background-color": "var(--c-bg)"
+                    }
+            }
+        >
       <Show
         when={!loading()}
         fallback={() => (
+
             <div class="gen-cb-wrapper">
                 <span>ChatGPT正在思考...</span>
                 <div class="gen-cb-stop" onClick={stopStreamFetch}>停止</div>
             </div>
         )}
       >
-          <div
-              class="pb-2em fixed bottom-0 z-100 op-0"
-              style={
-                  containerWidth() === "init"
-                      ?{}
-                      : {
-                      transition: "opacity 1s ease-in-out",
-                      width: containerWidth(),
-                      opacity: 100,
-                      "background-color": "var(--c-bg)"
-                  }
-              }
-          >
+
           <div class="gen-text-wrapper" class:op-50={systemRoleEditing()}>
           <textarea
             ref={inputRef!}
@@ -316,9 +317,9 @@ export default () => {
           />
 
           </Show>
-          </div>
-      </Show>
 
+      </Show>
+        </div>
     </div>
 
   )
