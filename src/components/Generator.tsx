@@ -86,6 +86,7 @@ export default (props:Props) => {
       },
     ])
     requestWithLatestMessage()
+        smoothToBottom()
   }
 
     const forceAssistant = (message: string) => {
