@@ -11,7 +11,13 @@ import { useThrottleFn } from 'solidjs-use'
 // @ts-ignore
 import { createResizeObserver } from "@solid-primitives/resize-observer"
 import {isMobile} from "@/utils/auth";
+import { parsePrompts } from "@/utils/parse"
+const prompts = await parsePrompts()
 
+export interface PromptItem {
+    desc: string
+    prompt: string
+}
 export default () => {
     let inputRef: HTMLTextAreaElement, keyRef: HTMLInputElement
     const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
@@ -26,8 +32,11 @@ export default () => {
     let forcedAssistant: HTMLTextAreaElement
     let containerRef: HTMLDivElement
     const [forcedAssistantEnabled, setForcedAssistantEnabled] = createSignal(false)
+    const [prompt, setPrompt] = createSignal<PromptItem[]>([])
+    setPrompt(prompts)
 
     onMount(() => {
+
         createResizeObserver(containerRef, ({ width, height }, el) => {
             if (el === containerRef) setContainerWidth(`${width}px`)
         })
@@ -226,7 +235,6 @@ export default () => {
             handleButtonClick()
         }
     }
-
     return (
     <div my-6 mb-20 sm:mb-32 ref={containerRef!}>
       <SystemRoleSettings
@@ -235,6 +243,9 @@ export default () => {
         setSystemRoleEditing={setSystemRoleEditing}
         currentSystemRoleSettings={currentSystemRoleSettings}
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
+        prompt={prompt}
+        setPrompt={setPrompt}
+
       />
         <KeySetting
             setKey={setKey}
