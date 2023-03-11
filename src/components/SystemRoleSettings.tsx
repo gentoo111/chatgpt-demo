@@ -13,7 +13,7 @@ interface Props {
   prompt:Accessor< PromptItem[]>
   hover: boolean
 }
-
+let systemInputRef: HTMLTextAreaElement
 export default (props: Props) => {
 
   const [hoverIndex, setHoverIndex] = createSignal(0)
@@ -27,19 +27,24 @@ export default (props: Props) => {
     } else if (e.key === "Enter") {
       systemInputRef.value=props.prompt()[hoverIndex()].prompt
       setShowPrompt(false)
-    } else if(e.key===" "){
+    } else if(props.systemRoleEditing()&&e.key===" "){
       setShowPrompt(true)
       e.preventDefault()
     }
   }
-  let systemInputRef: HTMLTextAreaElement
+
   let containerRef: HTMLUListElement
   const handleButtonClick = () => {
     props.setCurrentSystemRoleSettings(systemInputRef.value)
     props.setSystemRoleEditing(false)
+    setShowPrompt(false)
   }
   const showPreset=()=>{
     setShowPrompt(true)
+  }
+  const clearRole=()=>{
+    systemInputRef.value=""
+    setShowPrompt(false)
   }
   const itemClick=(k:string)=>{
     systemInputRef.value=k
@@ -129,9 +134,17 @@ export default (props: Props) => {
           <button onClick={handleButtonClick} mt-1 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             设为当前系统角色
           </button>
-          <button onClick={showPreset} mt-1 ml-2 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
-            显示预设角色
-          </button>
+          <Show when={!showPrompt()} >
+            <button onClick={showPreset} mt-1 ml-2 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+              显示预设角色
+            </button>
+          </Show>
+
+            <button onClick={clearRole} mt-1 ml-2 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+              清除角色
+            </button>
+
+
         </div>
       </Show>
     </div>
