@@ -1,7 +1,7 @@
 import { Show,createSignal,onMount,onCleanup,For,createEffect } from 'solid-js'
 import type { Accessor, Setter } from 'solid-js'
 import IconEnv from './icons/Env'
-import  PromptItem from './Generator'
+import type {PromptItem} from './Generator'
 
 interface Props {
   canEdit: Accessor<boolean>
@@ -146,7 +146,6 @@ function Item(props: {
             "bg-op-20": props.hover
           }}
           onClick={() => {
-            console.log(props.prompt.prompt)
             props.select(props.prompt.prompt)
           }}
       >

@@ -245,6 +245,7 @@ export default () => {
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
         prompt={prompt}
         setPrompt={setPrompt}
+        hover={false}
 
       />
         <KeySetting
