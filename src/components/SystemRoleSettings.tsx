@@ -2,6 +2,7 @@ import { Show,createSignal,onMount,onCleanup,For,createEffect } from 'solid-js'
 import type { Accessor, Setter } from 'solid-js'
 import IconEnv from './icons/Env'
 import type {PromptItem} from './Generator'
+import { Fzf } from "fzf"
 
 interface Props {
   canEdit: Accessor<boolean>
@@ -16,7 +17,9 @@ interface Props {
 
 let systemInputRef: HTMLTextAreaElement
 export default (props: Props) => {
-
+  const fzf = new Fzf(props.prompt(), {
+    selector: k => `${k.desc} (${k.prompt})`
+  })
   const [hoverIndex, setHoverIndex] = createSignal(0)
   const [showPrompt, setShowPrompt] = createSignal(false)
   const [maxHeight, setMaxHeight] = createSignal("320px")
@@ -111,7 +114,11 @@ export default (props: Props) => {
           <div>
             <textarea
               ref={systemInputRef!}
-              onInput={()=>setHasValue(!!systemInputRef?.value)}
+              onInput={(e)=>{
+                let { value } = e.currentTarget
+                props.setPrompt(fzf.find(value).map(k => k.item))
+                setHasValue(!!systemInputRef?.value)
+              }}
               placeholder="可按空格键选择预设角色，也可以自己输入自定义角色。"
               autocomplete="off"
               autofocus
