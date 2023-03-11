@@ -29,6 +29,7 @@ export default (props: Props) => {
     } else if (e.key === "Enter") {
       systemInputRef.value=props.prompt()[hoverIndex()].prompt
       setShowPrompt(false)
+      setHasValue(true)
     } else if(props.systemRoleEditing()&&e.key===" "){
       setShowPrompt(true)
       e.preventDefault()
@@ -40,6 +41,7 @@ export default (props: Props) => {
     props.setCurrentSystemRoleSettings(systemInputRef.value)
     props.setSystemRoleEditing(false)
     setShowPrompt(false)
+
   }
   const showPreset=()=>{
     setShowPrompt(true)
@@ -52,6 +54,7 @@ export default (props: Props) => {
   const itemClick=(k:string)=>{
     systemInputRef.value=k
     setShowPrompt(false)
+    setHasValue(true)
   }
   createEffect(() => {
     if (hoverIndex() < 0) {
