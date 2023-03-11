@@ -17,6 +17,7 @@ interface Props {
 
 let systemInputRef: HTMLTextAreaElement
 export default (props: Props) => {
+  const originPrompts=props.prompt()
   const fzf = new Fzf(props.prompt(), {
     selector: k => `${k.desc} (${k.prompt})`
   })
@@ -44,7 +45,7 @@ export default (props: Props) => {
     props.setCurrentSystemRoleSettings(systemInputRef.value)
     props.setSystemRoleEditing(false)
     setShowPrompt(false)
-
+    props.setPrompt(originPrompts)
   }
   const showPreset=()=>{
     setShowPrompt(true)
