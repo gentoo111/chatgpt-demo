@@ -13,12 +13,14 @@ interface Props {
   prompt:Accessor< PromptItem[]>
   hover: boolean
 }
+
 let systemInputRef: HTMLTextAreaElement
 export default (props: Props) => {
 
   const [hoverIndex, setHoverIndex] = createSignal(0)
   const [showPrompt, setShowPrompt] = createSignal(false)
   const [maxHeight, setMaxHeight] = createSignal("320px")
+  const [hasValue, setHasValue] = createSignal(false)
   function listener(e: KeyboardEvent) {
     if (e.key === "ArrowDown") {
       setHoverIndex(hoverIndex() + 1)
@@ -45,6 +47,7 @@ export default (props: Props) => {
   const clearRole=()=>{
     systemInputRef.value=""
     setShowPrompt(false)
+    setHasValue(false)
   }
   const itemClick=(k:string)=>{
     systemInputRef.value=k
@@ -105,6 +108,7 @@ export default (props: Props) => {
           <div>
             <textarea
               ref={systemInputRef!}
+              onInput={()=>setHasValue(!!systemInputRef?.value)}
               placeholder="可按空格键选择预设角色，也可以自己输入自定义角色。"
               autocomplete="off"
               autofocus
@@ -131,19 +135,19 @@ export default (props: Props) => {
             </For>
           </ul>
           </Show>
-          <button onClick={handleButtonClick} mt-1 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
-            设为当前系统角色
+          <button onClick={handleButtonClick} text-green-700 mt-1 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+            设定角色
           </button>
           <Show when={!showPrompt()} >
             <button onClick={showPreset} mt-1 ml-2 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
-              显示预设角色
+              显示预设
             </button>
           </Show>
-
+          <Show when={hasValue()} >
             <button onClick={clearRole} mt-1 ml-2 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
               清除角色
             </button>
-
+          </Show>
 
         </div>
       </Show>
