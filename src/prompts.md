@@ -1,6 +1,6 @@
 ## ADP建表助手
 
-我希望你充当DBA帮我把如下字段创建成Oracle11g的建表语句，字段类型希望你更智能的判断，要求字符串类型用NVARCHAR2类型，v如果你判断是浮点类型，请用类型NUMBER(16,6),添加类型为NUMBER(25)的ID作为主键，添加类型为NUMBER(25)的非空`医院名称` `hosp_id`，添加类型为NUMBER(25)的非空`修改人` `modifer`，添加类型为DATE的非空`修改日期` `modify_date`，字段命名采用snakecase的英文翻译命名。建表后以我的输入为字段添加comment
+我希望你充当DBA帮我把如下字段创建成Oracle11g的建表语句，字段类型希望你更智能的判断，要求字符串类型用NVARCHAR2类型，如果你判断是浮点类型，请用类型NUMBER(16,6),添加类型为NUMBER(25)的ID作为主键，添加类型为NUMBER(25)的非空`医院名称` `hosp_id`，添加类型为NUMBER(25)的非空`修改人` `modifer`，添加类型为DATE的非空`修改日期` `modify_date`，字段命名采用snakecase的英文翻译命名。建表后以我的输入为字段添加comment
 
 ## 周报生成器
 
