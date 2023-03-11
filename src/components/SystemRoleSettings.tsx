@@ -17,6 +17,7 @@ interface Props {
 export default (props: Props) => {
 
   const [hoverIndex, setHoverIndex] = createSignal(0)
+  const [showPrompt, setShowPrompt] = createSignal(false)
   const [maxHeight, setMaxHeight] = createSignal("320px")
   function listener(e: KeyboardEvent) {
     if (e.key === "ArrowDown") {
@@ -25,6 +26,10 @@ export default (props: Props) => {
       setHoverIndex(hoverIndex() - 1)
     } else if (e.key === "Enter") {
       systemInputRef.value=props.prompt()[hoverIndex()].prompt
+      setShowPrompt(false)
+    } else if(e.key===" "){
+      setShowPrompt(true)
+      e.preventDefault()
     }
   }
   let systemInputRef: HTMLTextAreaElement
@@ -33,8 +38,12 @@ export default (props: Props) => {
     props.setCurrentSystemRoleSettings(systemInputRef.value)
     props.setSystemRoleEditing(false)
   }
+  const showPreset=()=>{
+    setShowPrompt(true)
+  }
   const itemClick=(k:string)=>{
     systemInputRef.value=k
+    setShowPrompt(false)
   }
   createEffect(() => {
     if (hoverIndex() < 0) {
@@ -91,13 +100,14 @@ export default (props: Props) => {
           <div>
             <textarea
               ref={systemInputRef!}
-              placeholder="你是一个专业的IT架构师,请尽可能详细的回答我的问题。"
+              placeholder="可按空格键选择预设角色，也可以自己输入自定义角色。"
               autocomplete="off"
               autofocus
               rows="3"
               gen-textarea
             />
           </div>
+          <Show when={showPrompt()}>
           <ul
               ref={containerRef!}
               class="bg-slate bg-op-15 dark:text-slate text-slate-7 overflow-y-auto rounded-t"
@@ -115,9 +125,12 @@ export default (props: Props) => {
               )}
             </For>
           </ul>
-
+          </Show>
           <button onClick={handleButtonClick} mt-1 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
-            设置
+            设为当前系统角色
+          </button>
+          <button onClick={showPreset} mt-1 ml-2 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+            显示预设角色
           </button>
         </div>
       </Show>
