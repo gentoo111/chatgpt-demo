@@ -11,14 +11,15 @@ import { useThrottleFn } from 'solidjs-use'
 // @ts-ignore
 import { createResizeObserver } from "@solid-primitives/resize-observer"
 import {isMobile} from "@/utils/auth";
-import { parsePrompts } from "@/utils/parse"
-const prompts = await parsePrompts()
 
 export interface PromptItem {
     desc: string
     prompt: string
 }
-export default () => {
+interface Props{
+    prompts:PromptItem[]
+}
+export default (props:Props) => {
     let inputRef: HTMLTextAreaElement, keyRef: HTMLInputElement
     const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
     const [currentKey, setCurrentKey] = createSignal('')
@@ -33,7 +34,7 @@ export default () => {
     let containerRef: HTMLDivElement
     const [forcedAssistantEnabled, setForcedAssistantEnabled] = createSignal(false)
     const [prompt, setPrompt] = createSignal<PromptItem[]>([])
-    setPrompt(prompts)
+    setPrompt(props.prompts)
 
     onMount(() => {
 

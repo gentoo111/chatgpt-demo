@@ -6,12 +6,14 @@ import Generator from '../components/Generator'
 import '../message.css'
 import 'katex/dist/katex.min.css'
 import 'highlight.js/styles/atom-one-dark.css'
+import { parsePrompts } from "@/utils/parse"
+const prompts = await parsePrompts()
 ---
 
 <Layout title="ChatGPT API">
   <main>
     <Header />
-    <Generator client:load />
+    <Generator prompts:{prompts} client:load />
     <Footer />
   </main>
 </Layout>

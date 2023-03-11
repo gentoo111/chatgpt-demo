@@ -33,7 +33,7 @@ export default (props: Props) => {
     props.setCurrentSystemRoleSettings(systemInputRef.value)
     props.setSystemRoleEditing(false)
   }
-  const itemClick=(k)=>{
+  const itemClick=(k:string)=>{
     systemInputRef.value=k
   }
   createEffect(() => {
