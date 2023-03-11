@@ -116,7 +116,7 @@ export default (props: Props) => {
             </For>
           </ul>
 
-          <button onClick={handleButtonClick} h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+          <button onClick={handleButtonClick} mt-1 h-8 px-2 py-1 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             设置
           </button>
         </div>
