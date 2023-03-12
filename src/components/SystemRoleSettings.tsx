@@ -26,18 +26,21 @@ export default (props: Props) => {
   const [maxHeight, setMaxHeight] = createSignal("320px")
   const [hasValue, setHasValue] = createSignal(false)
   function listener(e: KeyboardEvent) {
-    if (e.key === "ArrowDown") {
-      setHoverIndex(hoverIndex() + 1)
-    } else if (e.key === "ArrowUp") {
-      setHoverIndex(hoverIndex() - 1)
-    } else if (e.key === "Enter") {
-      systemInputRef.value=props.prompt()[hoverIndex()].prompt
-      setShowPrompt(false)
-      setHasValue(true)
-    } else if(props.systemRoleEditing()&&e.key===" "){
-      setShowPrompt(true)
-      e.preventDefault()
+    if(props.systemRoleEditing()){
+      if (e.key === "ArrowDown") {
+        setHoverIndex(hoverIndex() + 1)
+      } else if (e.key === "ArrowUp") {
+        setHoverIndex(hoverIndex() - 1)
+      } else if (e.key === "Enter") {
+        systemInputRef.value=props.prompt()[hoverIndex()].prompt
+        setShowPrompt(false)
+        setHasValue(true)
+      } else if(e.key===" "){
+        setShowPrompt(true)
+        e.preventDefault()
+      }
     }
+
   }
 
   let containerRef: HTMLUListElement
