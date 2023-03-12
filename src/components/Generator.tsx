@@ -37,7 +37,6 @@ export default (props:Props) => {
     setPrompt(props.prompts)
 
     onMount(() => {
-
         createResizeObserver(containerRef, ({ width, height }, el) => {
             if (el === containerRef) setContainerWidth(`${width}px`)
         })
@@ -129,7 +128,7 @@ export default (props:Props) => {
             const controller = new AbortController()
             setController(controller)
             const originRequestMessageList = [...messageList()]
-            let requestMessageList=originRequestMessageList.slice(-3)
+            let requestMessageList=originRequestMessageList.slice(-import.meta.env.PUBLIC_MSG_LIMIT??3)
             if (currentSystemRoleSettings()) {
                 requestMessageList.unshift({
                     role: 'system',
