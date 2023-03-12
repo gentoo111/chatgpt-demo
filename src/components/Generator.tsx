@@ -125,7 +125,6 @@ export default (props:Props) => {
         setCurrentAssistantMessage('')
         const storagePassword = localStorage.getItem('pass')
         const msgLimit=import.meta.env.PUBLIC_MSG_LIMIT??3
-        console.log(msgLimit)
         try {
             const controller = new AbortController()
             setController(controller)
