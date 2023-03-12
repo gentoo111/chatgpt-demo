@@ -130,7 +130,7 @@ export default (props:Props) => {
             const controller = new AbortController()
             setController(controller)
             const originRequestMessageList = [...messageList()]
-            let requestMessageList=originRequestMessageList.slice(-import.meta.env.MSG_LIMIT??3)
+            let requestMessageList=originRequestMessageList.slice(-process.env.MSG_LIMIT??3)
             if (currentSystemRoleSettings()) {
                 requestMessageList.unshift({
                     role: 'system',
