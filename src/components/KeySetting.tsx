@@ -31,6 +31,7 @@ export default (props: Props) => {
                                placeholder="填入Key"
                                onInput={onInput}
                                value={props.currentKey()}
+                               type="password"
                                w-full
                                px-3 py-3
                                min-h-12
