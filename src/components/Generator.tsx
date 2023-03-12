@@ -37,7 +37,8 @@ export default (props:Props) => {
     setPrompt(props.prompts)
 
     onMount(() => {
-
+        const limit=import.meta.env.MSG_LIMIT
+        console.log(limit)
         createResizeObserver(containerRef, ({ width, height }, el) => {
             if (el === containerRef) setContainerWidth(`${width}px`)
         })
