@@ -124,11 +124,13 @@ export default (props:Props) => {
         setLoading(true)
         setCurrentAssistantMessage('')
         const storagePassword = localStorage.getItem('pass')
+        const msgLimit=import.meta.env.PUBLIC_MSG_LIMIT??3
+        console.log(msgLimit)
         try {
             const controller = new AbortController()
             setController(controller)
             const originRequestMessageList = [...messageList()]
-            let requestMessageList=originRequestMessageList.slice(-import.meta.env.PUBLIC_MSG_LIMIT??3)
+            let requestMessageList=originRequestMessageList.slice(-msgLimit)
             if (currentSystemRoleSettings()) {
                 requestMessageList.unshift({
                     role: 'system',
