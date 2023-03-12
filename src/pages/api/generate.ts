@@ -30,7 +30,7 @@ export const post: APIRoute = async (context) => {
   if(key!=superKey&&key){
     apiKey=key
   }
-  if(count>=5){
+  if(!key&&count>=5){
     return new Response("You have sent too many messages in a short period of time. Please retry after one minute!")
   }
   if (!messages) {
