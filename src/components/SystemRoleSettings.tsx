@@ -49,6 +49,7 @@ export default (props: Props) => {
   }
   const showPreset=()=>{
     setShowPrompt(true)
+    props.setPrompt(originPrompts)
   }
   const clearRole=()=>{
     systemInputRef.value=""
