@@ -10,9 +10,16 @@ import KeySetting from "./KeySetting";
 import { useThrottleFn } from 'solidjs-use'
 // @ts-ignore
 import { createResizeObserver } from "@solid-primitives/resize-observer"
+import {isMobile} from "@/utils/auth";
 
-
-export default () => {
+export interface PromptItem {
+    desc: string
+    prompt: string
+}
+interface Props{
+    prompts:PromptItem[]
+}
+export default (props:Props) => {
     let inputRef: HTMLTextAreaElement, keyRef: HTMLInputElement
     const [currentSystemRoleSettings, setCurrentSystemRoleSettings] = createSignal('')
     const [currentKey, setCurrentKey] = createSignal('')
@@ -26,6 +33,8 @@ export default () => {
     let forcedAssistant: HTMLTextAreaElement
     let containerRef: HTMLDivElement
     const [forcedAssistantEnabled, setForcedAssistantEnabled] = createSignal(false)
+    const [prompt, setPrompt] = createSignal<PromptItem[]>([])
+    setPrompt(props.prompts)
 
     onMount(() => {
         createResizeObserver(containerRef, ({ width, height }, el) => {
@@ -76,6 +85,7 @@ export default () => {
       },
     ])
     requestWithLatestMessage()
+        smoothToBottom()
   }
 
     const forceAssistant = (message: string) => {
@@ -99,7 +109,7 @@ export default () => {
             }
         ])
 
-        inputRef.focus()
+        !isMobile()&&inputRef.focus()
     }
 
     const smoothToBottom = useThrottleFn(() => {
@@ -114,11 +124,12 @@ export default () => {
         setLoading(true)
         setCurrentAssistantMessage('')
         const storagePassword = localStorage.getItem('pass')
+        const msgLimit=import.meta.env.PUBLIC_MSG_LIMIT??3
         try {
             const controller = new AbortController()
             setController(controller)
             const originRequestMessageList = [...messageList()]
-            let requestMessageList=originRequestMessageList.slice(-3)
+            let requestMessageList=originRequestMessageList.slice(-msgLimit)
             if (currentSystemRoleSettings()) {
                 requestMessageList.unshift({
                     role: 'system',
@@ -188,7 +199,7 @@ export default () => {
             setCurrentAssistantMessage('')
             setLoading(false)
             setController(null)
-            inputRef.focus()
+            !isMobile()&&inputRef.focus()
         }
     }
 
@@ -226,15 +237,18 @@ export default () => {
             handleButtonClick()
         }
     }
-
-  return (
-    <div my-6 sm:my-20 ref={containerRef!}>
+    return (
+    <div my-6 mb-20 sm:mb-32 ref={containerRef!}>
       <SystemRoleSettings
         canEdit={() => messageList().length === 0}
         systemRoleEditing={systemRoleEditing}
         setSystemRoleEditing={setSystemRoleEditing}
         currentSystemRoleSettings={currentSystemRoleSettings}
         setCurrentSystemRoleSettings={setCurrentSystemRoleSettings}
+        prompt={prompt}
+        setPrompt={setPrompt}
+        hover={false}
+
       />
         <KeySetting
             setKey={setKey}
@@ -259,7 +273,7 @@ export default () => {
         />
       )}
         <div
-            class="pb-0 sm:pb-10 sm:fixed bottom-0 z-100 op-0"
+            class="pb-10 sm:pb-20 fixed bottom-0 z-100 op-0"
             style={
                 containerWidth() === "init"
                     ?{}
@@ -296,17 +310,17 @@ export default () => {
             rows="1"
             class='gen-textarea'
           />
-          <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+          <button title="发送" onClick={handleButtonClick} disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             <IconSend />
           </button>
-          <button title="清除" onClick={clear} disabled={systemRoleEditing()} mr-1 sm:mr-0 h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
+          <button title="清除" onClick={clear} disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15 hover:bg-op-20 rounded-sm>
             <IconClear />
           </button>
-              <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
-                      disabled={systemRoleEditing()}  h-12 px-4 py-2 bg-slate bg-op-15
-                      hover:bg-op-20 text-slate rounded-sm>
-                  <IconRobotDead/>
-              </button>
+          <button title="Forced Assistant" onClick={() => setForcedAssistantEnabled((prev) => !prev)}
+                  disabled={systemRoleEditing()} hidden sm:block h-12 px-4 py-2 bg-slate bg-op-15
+                  hover:bg-op-20  rounded-sm>
+              <IconRobotDead/>
+          </button>
         </div>
           <Show when={forcedAssistantEnabled()}>
           <textarea

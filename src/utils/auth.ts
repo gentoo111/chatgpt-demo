@@ -1,5 +1,4 @@
 import { sha256 } from 'js-sha256'
-
 interface AuthPayload {
   t: number
   m: string
@@ -29,4 +28,7 @@ export const verifySignature = async (payload: AuthPayload, sign: string) => {
   // }
   const payloadSign = await generateSignature(payload)
   return payloadSign === sign
+}
+export function isMobile() {
+  return /Mobi|Android|iPhone/i.test(navigator.userAgent)
 }
