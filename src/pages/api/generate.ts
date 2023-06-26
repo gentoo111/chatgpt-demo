@@ -9,7 +9,8 @@ import { fetch, ProxyAgent } from 'undici'
 
 const superKey=import.meta.env.SUPER_KEY
 const httpsProxy = import.meta.env.HTTPS_PROXY
-const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
+const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://ai.fakeopen.com').trim().replace(/\/$/,'')
+//const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
 const sitePassword = import.meta.env.SITE_PASSWORD
 let count = 0;
 let timestamp:number[] = [0];
